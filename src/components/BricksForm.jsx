@@ -72,7 +72,7 @@ const BrickForm = () => {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container" >
       <div className="card shadow p-4">
         <h2 className="text-center mb-4 text-primary">Bricks Order Form</h2>
         <form onSubmit={handleSubmit} className="row g-3">

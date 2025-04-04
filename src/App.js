@@ -1,35 +1,25 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import BrickList from "./components/BricksList";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js"; // ✅ Bootstrap JS for toggle
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import Navbar from "./Navbar/Navbar";
 import Login from "./Login/Login";
 
 function App() {
-  let userData = localStorage.getItem("role");
+  const userData = localStorage.getItem("role"); // Role ko check karna zaroori hai
 
   return (
     <Router>
-      {/* Login Route */}
-      <Routes>
-        <Route path="/login" element={<Login />} />
-      </Routes>
-
-      <div>
-        {/* ✅ Stylish Navbar */}
-        {userData && <Navbar />}
-
-        {/* 🔹 Content Section */}
-        <div className="container mt-5 pt-4">
-          {userData && (
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/list" element={<BrickList />} />
-            </Routes>
-          )}
-        </div>
-      </div>
+      {userData && <Navbar />}
+    
+     
+        <Routes>
+          <Route path="/" element={userData ? <Home /> : <Navigate to="/login" />} />
+          <Route path="/list" element={userData ? <BrickList /> : <Navigate to="/login" />} />
+          <Route path="/login" element={!userData ? <Login /> : <Navigate to="/" />} />
+        </Routes>
+ 
     </Router>
   );
 }

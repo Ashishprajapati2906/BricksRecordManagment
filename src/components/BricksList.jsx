@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { collection, onSnapshot, doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import { Button, Modal, Form } from "react-bootstrap";
-import Swal from "sweetalert2";
 import * as XLSX from 'xlsx';
+import Navbar from "../Navbar/Navbar";
 
 
 const ViewOrders = () => {
@@ -11,7 +11,6 @@ const ViewOrders = () => {
 	const [viewType, setViewType] = useState("table");
 	const [showModal, setShowModal] = useState(false);
 	const [currentOrder, setCurrentOrder] = useState(null);
-	console.log("currentOrder", currentOrder);
 
 	const [paymentFilter, setPaymentFilter] = useState("All");
 
@@ -33,48 +32,25 @@ const ViewOrders = () => {
 
 	const filteredOrders = paymentFilter === "All" ? orders : orders.filter((order) => order.paymentStatus === paymentFilter);
 
-	// const handleDelete = async (id) => {
-	// 	Swal.fire({
-	// 	  title: "Are you sure?",
-	// 	  text: "You won't be able to revert this!",
-	// 	  icon: "warning",
-	// 	  showCancelButton: true,
-	// 	  confirmButtonColor: "#d33",
-	// 	  cancelButtonColor: "#3085d6",
-	// 	  confirmButtonText: "Yes, delete it!",
-	// 	}).then(async (result) => {
-	// 	  if (result.isConfirmed) {
-	// 		try {
-	// 		  await deleteDoc(doc(db, "bricksOrders", id));
-
-	// 		  // ✅ Success Alert
-	// 		  Swal.fire({
-	// 			title: "Deleted!",
-	// 			text: "Your order has been deleted.",
-	// 			icon: "success",
-	// 			timer: 2000,
-	// 			showConfirmButton: false,
-	// 		  });
-	// 		} catch (error) {
-	// 		  console.error("Error deleting order:", error);
-
-	// 		  // ❌ Error Alert
-	// 		  Swal.fire({
-	// 			title: "Error!",
-	// 			text: "Something went wrong. Try again!",
-	// 			icon: "error",
-	// 			timer: 2000,
-	// 			showConfirmButton: false,
-	// 		  });
-	// 		}
-	// 	  }
-	// 	});
-	//   };
 
 	const handleEdit = (order) => {
 		setCurrentOrder(order);
 		setShowModal(true);
 	};
+
+	const handleDelete = async (order) => {
+		const confirm = window.confirm("Are you sure you want to delete this order?");
+		if (!confirm) return;
+	  
+		try {
+		  await deleteDoc(doc(db, "bricksOrders", order.id));
+		  alert("Order deleted successfully!");
+		} catch (error) {
+		  console.error("Delete failed:", error);
+		  alert("Failed to delete the order.");
+		}
+	  };
+	  
 
 	const handleUpdate = async () => {
 		if (currentOrder) {
@@ -119,52 +95,53 @@ const ViewOrders = () => {
 	};
 
 
-	  // Handle Excel download
-	  const handleDownloadExcel = () => {
+	// Handle Excel download
+	const handleDownloadExcel = () => {
 		const data = filteredOrders.map((order) => ({
-		  "Gadi Number": order.gadiNumber,
-		  "Bricks Price": order.bricksPricePer1000,
-		  "Bricks Quantity": order.bricksQuantity,
-		  "City/Gaon": order.cityGaon,
-		  "Client Name": order.clientName,
-		  "Contact Number": order.contactNumber,
-		  "Total Amount": order.totalAmount,
-		  "Advance Amount": order.advanceAmount,
-		  "Remaining Amount": order.remainingAmount,
-		  "Payment Status": order.paymentStatus,
-		  "Date": order.date,
+			"Gadi Number": order.gadiNumber,
+			"Bricks Price": order.bricksPricePer1000,
+			"Bricks Quantity": order.bricksQuantity,
+			"City/Gaon": order.cityGaon,
+			"Client Name": order.clientName,
+			"Contact Number": order.contactNumber,
+			"Total Amount": order.totalAmount,
+			"Advance Amount": order.advanceAmount,
+			"Remaining Amount": order.remainingAmount,
+			"Payment Status": order.paymentStatus,
+			"Date": order.date,
 		}));
-	  
+
 		// Create worksheet
 		const ws = XLSX.utils.json_to_sheet(data);
-	  
+
 		// Style for headers
 		const headerStyle = {
-		  font: { bold: true, sz: 20 }, // Bold and font size 12 for headings
-		  alignment: { horizontal: "center" }, // Center alignment for headers
+			font: { bold: true, sz: 20 }, // Bold and font size 12 for headings
+			alignment: { horizontal: "center" }, // Center alignment for headers
 		};
-	  
+
 		// Apply style to headers (first row)
 		const range = XLSX.utils.decode_range(ws['!ref']); // Get sheet range
 		for (let col = range.s.c; col <= range.e.c; col++) {
-		  const cellAddress = { r: range.s.r, c: col }; // First row (headers)
-		  const cellRef = XLSX.utils.encode_cell(cellAddress);
-		  if (!ws[cellRef]) continue;
-		  ws[cellRef].s = headerStyle; // Apply style
+			const cellAddress = { r: range.s.r, c: col }; // First row (headers)
+			const cellRef = XLSX.utils.encode_cell(cellAddress);
+			if (!ws[cellRef]) continue;
+			ws[cellRef].s = headerStyle; // Apply style
 		}
-	  
+
 		// Create a new workbook and append the sheet
 		const wb = XLSX.utils.book_new();
 		XLSX.utils.book_append_sheet(wb, ws, "Orders");
-	  
+
 		// Write file
 		XLSX.writeFile(wb, "orders.xlsx");
-	  };
-	  
+	};
+
 
 
 	return (
-		<div className="container mt-4">
+
+		<div className="container">
 			<h2 className="text-center">Bricks Orders (Real-time)</h2>
 			<div className="d-flex justify-content-center mb-3">
 				<Button variant="primary" className="me-2" onClick={() => setViewType("table")}>
@@ -189,52 +166,63 @@ const ViewOrders = () => {
 			</div>
 
 			{viewType === "table" ? (
-				<table className="table table-hover premium-table">
-					<thead>
-						<tr>
-							<th>No</th>
-							<th>Gadi Number</th>
-							<th>Bricks Price</th>
-							<th>Bricks Quantity</th>
-							<th>City</th>
-							<th>Client Name</th>
-							<th>Contact Number</th>
-							<th>Total Amount</th>
-							<th>Advance</th>
-							<th>Remaining</th>
-							<th>Date</th>
-							<th>Payment Status</th>
-							<th>Actions</th>
-						</tr>
-					</thead>
-					<tbody>
-						{filteredOrders.map((order, index) => (
-							<tr key={order.id} className="premium-row">
-								<td>{index + 1}</td>
-								<td>{order.gadiNumber}</td>
-								<td>₹{order.bricksPricePer1000}</td>
-								<td>{order.bricksQuantity}</td>
-								<td>{order.cityGaon}</td>
-								<td>{order.clientName}</td>
-								<td>{order.contactNumber}</td>
-								<td><strong>₹{order.totalAmount}</strong></td>
-								<td><span className="text-primary">₹{order.advanceAmount}</span></td>
-								<td><span className="text-danger">₹{order.remainingAmount}</span></td>
-								<td>{order.date}</td>
-								<td>
-									<span className={`badge ${order.paymentStatus === "Paid" ? "bg-success" : "bg-danger"}`}>
-										{order.paymentStatus}
-									</span>
-								</td>
-								<td>
-									<Button variant="warning" size="sm" onClick={() => handleEdit(order)} className="premium-btn">
-										✏️ Edit
-									</Button>
-								</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
+			 <div className="wrapper">
+			 {/* Responsive scrollable wrapper */}
+			 <div style={{ overflowX: "auto", width: "100%" }}>
+			   <table className="table table-bordered">
+				 <thead className="sticky-top bg-white" style={{ top: 0, zIndex: 2 }}>
+				   <tr>
+					 <th>No</th>
+					 <th>Gadi Number</th>
+					 <th>Bricks Price</th>
+					 <th>Bricks Quantity</th>
+					 <th>City</th>
+					 <th>Client Name</th>
+					 <th>Contact Number</th>
+					 <th>Total Amount</th>
+					 <th>Advance</th>
+					 <th>Remaining</th>
+					 <th>Date</th>
+					 <th>Payment Status</th>
+					 <th>Actions</th>
+				   </tr>
+				 </thead>
+				 <tbody>
+				   {filteredOrders.map((order, index) => (
+					 <tr key={order.id} className="premium-row">
+					   <td>{index + 1}</td>
+					   <td>{order.gadiNumber}</td>
+					   <td>₹{order.bricksPricePer1000}</td>
+					   <td>{order.bricksQuantity}</td>
+					   <td>{order.cityGaon}</td>
+					   <td>{order.clientName}</td>
+					   <td>{order.contactNumber}</td>
+					   <td><strong>₹{order.totalAmount}</strong></td>
+					   <td><span className="text-primary">₹{order.advanceAmount}</span></td>
+					   <td><span className="text-danger">₹{order.remainingAmount}</span></td>
+					   <td>{order.date}</td>
+					   <td>
+						 <span className={`badge ${order.paymentStatus === "Paid" ? "bg-success" : "bg-danger"}`}>
+						   {order.paymentStatus}
+						 </span>
+					   </td>
+					   <td>
+						 <Button variant="warning" size="sm" onClick={() => handleEdit(order)} className="premium-btn">
+						   ✏️ Edit
+						 </Button>{" "}
+						 <Button variant="danger" size="sm" onClick={() => handleDelete(order)}>
+        Delete
+      </Button>
+					   </td>
+					 </tr>
+				   ))}
+				 </tbody>
+			   </table>
+			 </div>
+		   </div>
+
+
+
 
 
 
@@ -407,6 +395,7 @@ const ViewOrders = () => {
 			</Modal>
 
 		</div>
+
 	);
 };
 

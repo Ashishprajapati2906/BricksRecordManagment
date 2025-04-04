@@ -1,0 +1,46 @@
+/* Reset default browser styles */
+
+/* body {
+	background: linear-gradient(135deg, #667eea, #764ba2);
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0;
+  } */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+  }
+  
+  /* Body default styles */
+  body {
+	font-family: Arial, sans-serif;
+	/* background-color: #f9f9f9; */
+	color: #333;
+	line-height: 1.6;
+	background: linear-gradient(135deg, #764ba2);
+  }
+  
+  /* Container class for layout */
+  .container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 20px;
+  }
+  
+
+.wrapper {
+	width: 100%;
+	overflow-x: auto;
+  }
+  
+  .table {
+	min-width: 700px;
+	width: 100%;
+	text-align: left;
+	th {
+	  background: #f0f0f0;
+	}
+  }
