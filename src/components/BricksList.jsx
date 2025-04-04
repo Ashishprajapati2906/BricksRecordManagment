@@ -41,16 +41,16 @@ const ViewOrders = () => {
 	const handleDelete = async (order) => {
 		const confirm = window.confirm("Are you sure you want to delete this order?");
 		if (!confirm) return;
-	  
+
 		try {
-		  await deleteDoc(doc(db, "bricksOrders", order.id));
-		  alert("Order deleted successfully!");
+			await deleteDoc(doc(db, "bricksOrders", order.id));
+			alert("Order deleted successfully!");
 		} catch (error) {
-		  console.error("Delete failed:", error);
-		  alert("Failed to delete the order.");
+			console.error("Delete failed:", error);
+			alert("Failed to delete the order.");
 		}
-	  };
-	  
+	};
+
 
 	const handleUpdate = async () => {
 		if (currentOrder) {
@@ -166,60 +166,60 @@ const ViewOrders = () => {
 			</div>
 
 			{viewType === "table" ? (
-			 <div className="wrapper">
-			 {/* Responsive scrollable wrapper */}
-			 <div style={{ overflowX: "auto", width: "100%" }}>
-			   <table className="table table-bordered">
-				 <thead className="sticky-top bg-white" style={{ top: 0, zIndex: 2 }}>
-				   <tr>
-					 <th>No</th>
-					 <th>Gadi Number</th>
-					 <th>Bricks Price</th>
-					 <th>Bricks Quantity</th>
-					 <th>City</th>
-					 <th>Client Name</th>
-					 <th>Contact Number</th>
-					 <th>Total Amount</th>
-					 <th>Advance</th>
-					 <th>Remaining</th>
-					 <th>Date</th>
-					 <th>Payment Status</th>
-					 <th>Actions</th>
-				   </tr>
-				 </thead>
-				 <tbody>
-				   {filteredOrders.map((order, index) => (
-					 <tr key={order.id} className="premium-row">
-					   <td>{index + 1}</td>
-					   <td>{order.gadiNumber}</td>
-					   <td>₹{order.bricksPricePer1000}</td>
-					   <td>{order.bricksQuantity}</td>
-					   <td>{order.cityGaon}</td>
-					   <td>{order.clientName}</td>
-					   <td>{order.contactNumber}</td>
-					   <td><strong>₹{order.totalAmount}</strong></td>
-					   <td><span className="text-primary">₹{order.advanceAmount}</span></td>
-					   <td><span className="text-danger">₹{order.remainingAmount}</span></td>
-					   <td>{order.date}</td>
-					   <td>
-						 <span className={`badge ${order.paymentStatus === "Paid" ? "bg-success" : "bg-danger"}`}>
-						   {order.paymentStatus}
-						 </span>
-					   </td>
-					   <td>
-						 <Button variant="warning" size="sm" onClick={() => handleEdit(order)} className="premium-btn">
-						   ✏️ Edit
-						 </Button>{" "}
-						 <Button variant="danger" size="sm" onClick={() => handleDelete(order)}>
-        Delete
-      </Button>
-					   </td>
-					 </tr>
-				   ))}
-				 </tbody>
-			   </table>
-			 </div>
-		   </div>
+				<div className="wrapper">
+					{/* Responsive scrollable wrapper */}
+					<div style={{ overflowX: "auto", width: "100%" }}>
+						<table className="table table-bordered">
+							<thead className="sticky-top bg-white" style={{ top: 0, zIndex: 2 }}>
+								<tr>
+									<th>No</th>
+									<th>Gadi Number</th>
+									<th>Bricks Price</th>
+									<th>Bricks Quantity</th>
+									<th>City</th>
+									<th>Client Name</th>
+									<th>Contact Number</th>
+									<th>Total Amount</th>
+									<th>Advance</th>
+									<th>Remaining</th>
+									<th>Date</th>
+									<th>Payment Status</th>
+									<th>Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								{filteredOrders.map((order, index) => (
+									<tr key={order.id} className="premium-row">
+										<td>{index + 1}</td>
+										<td>{order.gadiNumber}</td>
+										<td>₹{order.bricksPricePer1000}</td>
+										<td>{order.bricksQuantity}</td>
+										<td>{order.cityGaon}</td>
+										<td>{order.clientName}</td>
+										<td>{order.contactNumber}</td>
+										<td><strong>₹{order.totalAmount}</strong></td>
+										<td><span className="text-primary">₹{order.advanceAmount}</span></td>
+										<td><span className="text-danger">₹{order.remainingAmount}</span></td>
+										<td>{order.date}</td>
+										<td>
+											<span className={`badge ${order.paymentStatus === "Paid" ? "bg-success" : "bg-danger"}`}>
+												{order.paymentStatus}
+											</span>
+										</td>
+										<td>
+											<Button variant="warning" size="sm" onClick={() => handleEdit(order)} className="premium-btn">
+												✏️ Edit
+											</Button>{" "}
+											<Button variant="danger" size="sm" onClick={() => handleDelete(order)}>
+												Delete
+											</Button>
+										</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
+				</div>
 
 
 
