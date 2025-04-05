@@ -35,49 +35,52 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-box">
-        <h2 className="text-center mb-4">Welcome Back 👋</h2>
+    <div className="login-container d-flex align-items-center justify-content-center vh-100">
+      <div className="login-box shadow p-4 rounded">
+        <h2 className="text-center mb-4">👋 Welcome Sandeep</h2>
+  
         {error && <div className="alert alert-danger">{error}</div>}
-
+  
         <form onSubmit={handleSubmit}>
-          <div className="input-box">
-            <FaUser className="icon" />
+          <div className="input-box mb-3 position-relative">
+            <FaUser className="icon position-absolute top-50 translate-middle-y ms-2 text-secondary" />
             <input
               type="email"
-              className="form-control"
+              className="form-control ps-5"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
               required
             />
           </div>
-
-          <div className="input-box">
-            <FaLock className="icon" />
+  
+          <div className="input-box mb-3 position-relative">
+            <FaLock className="icon position-absolute top-50 translate-middle-y ms-2 text-secondary" />
             <input
               type={showPassword ? "text" : "password"}
-              className="form-control"
+              className="form-control ps-5"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
               required
             />
             <span
-              className="toggle-password"
+              className="toggle-password position-absolute top-50 end-0 translate-middle-y me-3 text-muted"
               onClick={() => setShowPassword(!showPassword)}
+              style={{ cursor: "pointer" }}
             >
               {showPassword ? "👁️" : "🔒"}
             </span>
           </div>
-
-          <button type="submit" className="btn btn-login">
+  
+          <button type="submit" className="btn btn-primary w-100">
             Login
           </button>
         </form>
       </div>
     </div>
   );
+  
 };
 
 export default Login;

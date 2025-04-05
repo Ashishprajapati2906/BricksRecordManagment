@@ -207,8 +207,8 @@ const ViewOrders = () => {
 											</span>
 										</td>
 										<td>
-											<Button variant="warning" size="sm" onClick={() => handleEdit(order)} className="premium-btn">
-												✏️ Edit
+											<Button variant="warning" size="sm" onClick={() => handleEdit(order)} className="premium-btn m-2">
+												 Edit
 											</Button>{" "}
 											<Button variant="danger" size="sm" onClick={() => handleDelete(order)}>
 												Delete
