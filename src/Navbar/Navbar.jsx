@@ -85,7 +85,7 @@ const Navbar = () => {
                 {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
               </button>
             </li>
-            <li className="nav-item">
+            <li className="nav-item mt-1">
               <button className="btn btn-danger ms-3" onClick={handleLogout}>
                 🔓 Logout
               </button>
