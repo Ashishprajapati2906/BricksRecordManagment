@@ -1,46 +1,118 @@
-/* Reset default browser styles */
-
-/* body {
-	background: linear-gradient(135deg, #667eea, #764ba2);
-	height: 100vh;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	margin: 0;
-  } */
+/* Reset */
 * {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-  }
-  
-  /* Body default styles */
-  body {
-	font-family: Arial, sans-serif;
-	/* background-color: #f9f9f9; */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Default body styles */
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  transition: all 0.3s ease;
+}
+
+/* Light theme */
+body.light {
+  background: linear-gradient(135deg, #9b63d3, #667eea);
+  color: #333;
+}
+
+/* Dark theme */
+body.dark {
+  background: linear-gradient(135deg, #5e72aa, #928dab);
+  /* color: #f9f9f9; */
+}
+
+/* Container common */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Table wrapper */
+.wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Table common */
+.table {
+  min-width: 700px;
+  width: 100%;
+  text-align: left;
+}
+
+/* Table Header styles Light */
+body.light .table th {
+  background: #f0f0f0;
+  color: #333;
+}
+
+/* Table Header styles Dark */
+body.dark .table th {
+  background: #333;
+  color: #f9f9f9;
+}
+
+
+
+
+/* Light Theme Modal */
+body.light .theme-modal .modal-content {
+	background-color: #ffffff;
 	color: #333;
-	line-height: 1.6;
-	background: linear-gradient(135deg, #764ba2);
   }
   
-  /* Container class for layout */
-  .container {
-	max-width: 1200px;
-	margin: 0 auto;
-	padding: 20px;
+  /* Dark Theme Modal */
+  body.dark .theme-modal .modal-content {
+	background-color: #2c2c2c;
+	color: #f1f1f1;
+  }
+  
+  
+  /* Optional: Input field background */
+  body.dark .theme-modal .form-control {
+	background-color: #3a3a3a;
+	color: #f1f1f1;
+	border: 1px solid #555;
+  }
+  
+  body.light .theme-modal .form-control {
+	background-color: #fff;
+	color: #333;
   }
   
 
-.wrapper {
-	width: 100%;
-	overflow-x: auto;
+
+
+  /* navbar css start for light dark theme */
+  /* Light Theme */
+.navbar-light {
+	background-color: #ffffff !important;
+	color: #000000 !important;
   }
   
-  .table {
-	min-width: 700px;
-	width: 100%;
-	text-align: left;
-	th {
-	  background: #f0f0f0;
-	}
+  .navbar-light .nav-link {
+	color: #000000 !important;
   }
+  
+  .navbar-light .navbar-brand {
+	color: #000000 !important;
+  }
+  
+  /* Dark Theme */
+  .navbar-dark {
+	background-color: #1f1f1f !important;
+	color: #ffffff !important;
+  }
+  
+  .navbar-dark .nav-link {
+	color: #ffffff !important;
+  }
+  
+  .navbar-dark .navbar-brand {
+	color: #ffffff !important;
+  }
+  

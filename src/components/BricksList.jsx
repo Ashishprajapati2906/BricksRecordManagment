@@ -7,6 +7,8 @@ import Navbar from "../Navbar/Navbar";
 
 
 const ViewOrders = () => {
+    const theme = localStorage.getItem('theme');
+
 	const [orders, setOrders] = useState([]);
 	const [viewType, setViewType] = useState("table");
 	const [showModal, setShowModal] = useState(false);
@@ -144,13 +146,21 @@ const ViewOrders = () => {
 		<div className="container">
 			<h2 className="text-center">Bricks Orders (Real-time)</h2>
 			<div className="d-flex justify-content-center mb-3">
-				<Button variant="primary" className="me-2" onClick={() => setViewType("table")}>
-					Table View
-				</Button>
-				<Button variant="secondary" onClick={() => setViewType("list")}>
-					List View
-				</Button>
-			</div>
+  <Button 
+    variant={viewType === "table" ? "primary" : "light"} 
+    className={`me-2 ${viewType === "table" ? "text-white" : "text-dark"}`}
+    onClick={() => setViewType("table")}
+  >
+    Table View
+  </Button>
+  <Button 
+    variant={viewType === "list" ? "primary" : "light"} 
+    className={viewType === "list" ? "text-white" : "text-dark"}
+    onClick={() => setViewType("list")}
+  >
+    List View
+  </Button>
+</div>
 			<div className="d-flex justify-content-center mb-3">
 				<Button variant="success" onClick={handleDownloadExcel}>
 					Download Excel
@@ -314,7 +324,7 @@ const ViewOrders = () => {
 			)}
 
 			{/* Edit Modal */}
-			<Modal show={showModal} onHide={() => setShowModal(false)}>
+			<Modal show={showModal} onHide={() => setShowModal(false)} className={theme === 'light' ? 'modal-light' : 'modal-dark'}>
 				<Modal.Header closeButton>
 					<Modal.Title>Edit Order</Modal.Title>
 				</Modal.Header>
